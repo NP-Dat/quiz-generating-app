@@ -1,0 +1,362 @@
+[
+    {
+      "question": "What version of the Internet Protocol is IPv4?",
+      "answers": [
+        "1st version",
+        "2nd version",
+        "3rd version",
+        "4th version"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "How many bits are in an IPv4 address?",
+      "answers": [
+        "16 bits",
+        "64 bits",
+        "32 bits",
+        "128 bits"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "An IPv4 address is composed of how many octets?",
+      "answers": [
+        "2",
+        "4",
+        "8",
+        "16"
+      ],
+      "correct_answer": 1
+    },
+    {
+      "question": "What is the purpose of the Network ID in IP addressing?",
+      "answers": [
+        "To identify a specific host within a network",
+        "To identify a group of hosts on the same network",
+        "To deliver data to the receiver",
+        "To translate IP addresses"
+      ],
+      "correct_answer": 1
+    },
+    {
+      "question": "Which analogy is used to describe the Network ID in the presentation?",
+      "answers": [
+        "Home address",
+        "Street name",
+        "Zip code (postal code)",
+        "Email address"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is the role of the Host ID?",
+      "answers": [
+        "To forward packets to the destination network",
+        "To identify the network",
+        "To deliver data to the receiver within the destination network",
+        "To manage network traffic"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "Which analogy is used to describe the Host ID in the presentation?",
+      "answers": [
+        "Zip code (postal code)",
+        "Country name",
+        "City name",
+        "Home address"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "For a Network ID size of 24 bits, what is the Host ID size?",
+      "answers": [
+        "8 bits",
+        "16 bits",
+        "24 bits",
+        "32 bits"
+      ],
+      "correct_answer": 0
+    },
+    {
+      "question": "What does CIDR stand for?",
+      "answers": [
+        "Classless Inter-Domain Routing",
+        "Classful Internet Domain Routing",
+        "Classless Internet Domain Range",
+        "Classful Inter-Domain Range"
+      ],
+      "correct_answer": 0
+    },
+    {
+      "question": "In CIDR notation, what does the '/24' in '192.168.1.10/24' indicate?",
+      "answers": [
+        "The host ID size",
+        "The number of bits used for the network ID",
+        "The subnet mask in decimal",
+        "The number of usable host addresses"
+      ],
+      "correct_answer": 1
+    },
+    {
+      "question": "What operation is used to derive the network ID in CIDR?",
+      "answers": [
+        "Bitwise OR",
+        "Bitwise XOR",
+        "Bitwise AND",
+        "Bitwise NOT"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "According to the presentation, what is the first IP address in a network range used for?",
+      "answers": [
+        "Broadcast address",
+        "Default gateway",
+        "Network address",
+        "Usable host address"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is the last IP address in a network range typically used for?",
+      "answers": [
+        "Network address",
+        "Subnet mask",
+        "Broadcast address",
+        "Default gateway"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is the formula to calculate the number of usable host addresses in a CIDR block, where 'n' is the number of bits for the network ID?",
+      "answers": [
+        "2^(32 - n)",
+        "2^(32 - n) - 1",
+        "2^(n) - 2",
+        "2^(32 - n) - 2"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "For a CIDR prefix length of /24, how many usable hosts per network are available according to the table?",
+      "answers": [
+        "256",
+        "254",
+        "512",
+        "510"
+      ],
+      "correct_answer": 1
+    },
+    {
+      "question": "Which of the following is a private address space range?",
+      "answers": [
+        "192.168.0.0/8",
+        "172.16.0.0/8",
+        "10.0.0.0/16",
+        "192.168.0.0/16"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "What is the purpose of the localhost address?",
+      "answers": [
+        "To access external websites",
+        "To communicate with other computers on the network",
+        "To test network connectivity to the internet",
+        "To test network applications on the same machine"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "What is the IP address range typically used for localhost?",
+      "answers": [
+        "192.168.0.1",
+        "10.0.0.1",
+        "127.0.0.0/8",
+        "0.0.0.0/8"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What are ports used for in networking?",
+      "answers": [
+        "To translate IP addresses",
+        "To uniquely identify a network",
+        "To multiplex data from different applications",
+        "To route packets across networks"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is a socket address?",
+      "answers": [
+        "Only the IP address",
+        "Only the port number",
+        "IP address + port number",
+        "MAC address + IP address"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is the range for well-known port numbers?",
+      "answers": [
+        "0-1023",
+        "1024-49151",
+        "49152-65535",
+        "1024-65535"
+      ],
+      "correct_answer": 0
+    },
+    {
+      "question": "What is the purpose of Network Address Translation (NAT)?",
+      "answers": [
+        "To increase the number of available IPv4 addresses",
+        "To translate IPv4 to IPv6",
+        "To allow multiple devices to share a single public IP address",
+        "To improve network security"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What type of communication is Unicast?",
+      "answers": [
+        "One to All",
+        "One to Many (opt-in)",
+        "One to One",
+        "Many to Many"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What type of communication is Broadcast?",
+      "answers": [
+        "One to One",
+        "One to Many (opt-in)",
+        "One to All (no opt-in)",
+        "Many to One"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "How many bits are in an IPv6 address?",
+      "answers": [
+        "32 bits",
+        "64 bits",
+        "128 bits",
+        "256 bits"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "How is an IPv6 address typically represented?",
+      "answers": [
+        "Dotted decimal notation",
+        "Colon-separated octets",
+        "Colon-separated hextets",
+        "Semicolon-separated hextets"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "In IPv6, what is the recommendation for using hexadecimal values in addresses?",
+      "answers": [
+        "Uppercase",
+        "Capitalized",
+        "Lowercase",
+        "Mixed case"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is the purpose of the Global Routing Prefix (GRP) in IPv6?",
+      "answers": [
+        "For local network routing",
+        "For global routing",
+        "For host identification",
+        "For subnet identification"
+      ],
+      "correct_answer": 1
+    },
+    {
+      "question": "In IPv6, what is the size of the Interface ID?",
+      "answers": [
+        "16 bits",
+        "32 bits",
+        "48 bits",
+        "64 bits"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "What IPv6 address is similar to IPv4's 127.0.0.1 (localhost)?",
+      "answers": [
+        "::0/128",
+        "::1/128",
+        "0:0:0:0:0:0:0:1",
+        "fe80::1/128"
+      ],
+      "correct_answer": 1
+    },
+    {
+      "question": "What is the IPv6 address category that uniquely identifies a node?",
+      "answers": [
+        "Multicast",
+        "Broadcast",
+        "Anycast",
+        "Unicast"
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "What is a key difference between IPv6 Multicast and IPv4 Broadcast?",
+      "answers": [
+        "IPv6 Multicast is sent to all nodes, IPv4 Broadcast is sent to a group.",
+        "IPv6 Multicast is not available, IPv4 Broadcast is.",
+        "IPv6 Multicast exists, IPv4 Broadcast does not.",
+        "IPv6 Multicast is designed to replace Broadcast, which is not used in IPv6."
+      ],
+      "correct_answer": 3
+    },
+    {
+      "question": "What is the purpose of IPv6 Anycast?",
+      "answers": [
+        "To send data to all nodes in a network",
+        "To send data to a specific group of nodes",
+        "To send data to the nearest node in a group",
+        "To send data to a single, specific node"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "In the 'Verify Address' sample code, which Go package is used to parse IP addresses?",
+      "answers": [
+        "fmt",
+        "os",
+        "net",
+        "strconv"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "What is the purpose of the 'Address Mask' sample code?",
+      "answers": [
+        "To verify if an IP address is valid",
+        "To perform a DNS lookup for a hostname",
+        "To calculate the network address and mask for a given IP and prefix",
+        "To translate IP addresses using NAT"
+      ],
+      "correct_answer": 2
+    },
+    {
+      "question": "In the 'Lookup for IP addresses' sample code, which function is used to resolve a hostname to IP addresses?",
+      "answers": [
+        "net.ParseIP()",
+        "net.CIDRMask()",
+        "net.LookupHost()",
+        "addr.Mask()"
+      ],
+      "correct_answer": 2
+    }
+  ]

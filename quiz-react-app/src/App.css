@@ -1,0 +1,81 @@
+/* General App Styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5; /* Light background */
+  color: #333;
+}
+
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure footer stays at bottom */
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #61dafb; /* Cute blue */
+  padding: 20px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+main {
+  flex-grow: 1; /* Allow main content to expand */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align quiz to the top */
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App-footer {
+  background-color: #282c34; /* Dark footer */
+  padding: 10px;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.loading, .error-message {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 50px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
