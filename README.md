@@ -58,6 +58,18 @@ The quiz questions are stored in `public/data.json`. You can modify this file to
 ![image](https://github.com/user-attachments/assets/85a12f1c-9a20-46bf-ba8b-4e4df0b1fbe8)
 in Google AI Studio, use Gemini 2.0 flash thinking (optional: temperature 0.7) to prompt like the img above, copy and paste data into `public/data.json`
 
+json format:
+{
+    "question": "What version of the Internet Protocol is IPv4?",
+    "answers": [
+      "1st version",
+      "2nd version",
+      "3rd version",
+      "4th version"
+    ],
+    "correct_answer": 3
+  }
+
 
 ## Contributing
 
