@@ -1,0 +1,22 @@
+.answer-button {
+    /* Add transition for smooth scaling and other potential style changes */
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    /* Ensure base styles from the component take priority if needed, matching original inline styles */
+    height: auto !important;
+    white-space: normal !important;
+    text-align: left !important;
+    padding: 10px 15px !important;
+}
+
+.answer-button:not([disabled]):hover {
+    /* Apply scale effect on hover ONLY when the button is not disabled (i.e., before answering) */
+    transform: scale(1.03);
+}
+
+/* Override default Ant Design blue text hover specifically for the default button state */
+.answer-button.ant-btn-default:not([disabled]):hover {
+    color: inherit; /* Keep the original text color */
+    border-color: #40a9ff; /* Optional: Keep Antd's slightly blue border hover or set to #d9d9d9 */
+    /* Example: Use default border color on hover */
+    /* border-color: #d9d9d9; */
+}

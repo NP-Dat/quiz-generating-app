@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './css/Quiz.css'; // We'll create this file for styling
+import { Card, Button, Typography, Progress, Spin, Alert, Result, Space, Grid } from 'antd';
+import { LoadingOutlined, CheckCircleOutlined, CloseCircleOutlined, ReloadOutlined } from '@ant-design/icons';
+import './Quiz.css'; // Import the CSS file
+
+const { Title, Text } = Typography;
+const { useBreakpoint } = Grid; // Hook for responsive layouts
 
 function Quiz() {
     const [questions, setQuestions] = useState([]);
@@ -10,6 +15,8 @@ function Quiz() {
     const [error, setError] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer index
     const [isAnswered, setIsAnswered] = useState(false); // Track if the current question is answered
+
+    const screens = useBreakpoint(); // Get screen size info (e.g., lg, md, sm, xs)
 
     // Fetch quiz data
     useEffect(() => {
@@ -31,104 +38,126 @@ function Quiz() {
             });
     }, []); // Empty dependency array means this runs once on mount
 
-    const handleAnswerOptionClick = (isCorrect, index) => {
-        setSelectedAnswer(index); // Set the selected answer
-        setIsAnswered(true); // Mark question as answered
+    const handleAnswerOptionClick = (index) => {
+        const isCorrect = index === questions[currentQuestionIndex].correct_answer;
+        setSelectedAnswer(index);
+        setIsAnswered(true);
 
         if (isCorrect) {
             setScore(score + 1);
         }
 
-        // Automatically move to the next question after a short delay
         setTimeout(() => {
             const nextQuestion = currentQuestionIndex + 1;
             if (nextQuestion < questions.length) {
                 setCurrentQuestionIndex(nextQuestion);
-                setSelectedAnswer(null); // Reset selected answer for the next question
-                setIsAnswered(false); // Reset answered state
+                setSelectedAnswer(null);
+                setIsAnswered(false);
             } else {
-                setShowScore(true); // Show results if it was the last question
+                setShowScore(true);
             }
-        }, 1500); // Delay of 1.5 seconds
+        }, 1000); // Keep the delay for feedback visibility
     };
 
-    const getButtonClass = (index, isCorrect) => {
-        if (!isAnswered) {
-            return 'answer-button'; // Default state
-        }
+    // Get Ant Design button type and icon based on state
+    const getButtonProps = (index) => {
+        if (!isAnswered) return { type: 'default' }; // Default button appearance
+
+        const isCorrect = index === questions[currentQuestionIndex].correct_answer;
+
         if (index === selectedAnswer) {
-            return isCorrect ? 'answer-button correct' : 'answer-button incorrect';
+            return isCorrect
+                ? { type: 'primary', style: { background: '#52c41a', borderColor: '#52c41a'}, icon: <CheckCircleOutlined /> } // Explicit green primary
+                : { type: 'primary', danger: true, icon: <CloseCircleOutlined /> }; // Danger (red) primary
         }
-        // If this answer option is the correct one but wasn't selected, highlight it
+
+        // If this option is correct but wasn't selected
         if (isCorrect) {
-             return 'answer-button correct-unselected';
+             return { type: 'dashed', style: { color: '#52c41a', borderColor: '#b7eb8f' }, icon: <CheckCircleOutlined /> }; // Dashed green outline
         }
-        return 'answer-button disabled'; // Other buttons are disabled/dimmed after answering
+
+        // Other incorrect, unselected options - disable and make less prominent
+        return { type: 'default', disabled: true, style: { opacity: 0.6 } };
     };
 
-     const restartQuiz = () => {
+    const restartQuiz = () => {
         setCurrentQuestionIndex(0);
         setScore(0);
         setShowScore(false);
         setSelectedAnswer(null);
         setIsAnswered(false);
+         // Optional: Re-fetch or re-shuffle if you want new questions order on restart
     };
 
-
     if (isLoading) {
-        return <div className="loading">Loading Quiz...</div>;
+        return (
+            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                <Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
+                <p>Loading Quiz...</p>
+            </div>
+        );
     }
 
     if (error) {
-        return <div className="error-message">{error}</div>;
+        return <Alert message="Error" description={error} type="error" showIcon style={{ maxWidth: '600px', margin: '20px auto' }} />;
     }
 
-    if (questions.length === 0) {
-        return <div className="loading">No questions found.</div>;
+    if (questions.length === 0 && !isLoading) {
+        return <Alert message="No Questions" description="No questions were found. Please check the data source." type="warning" showIcon style={{ maxWidth: '600px', margin: '20px auto' }} />;
     }
+
+    const progressPercent = Math.round(((currentQuestionIndex + (isAnswered ? 1 : 0)) / questions.length) * 100); // Show progress update slightly sooner
 
     return (
-        <div className='quiz-container'>
+        <Card style={{ width: '100%', maxWidth: '700px' }} bordered={false}>
             {showScore ? (
-                <div className='score-section'>
-                    <h2>Quiz Complete!</h2>
-                    <p>You scored {score} out of {questions.length}</p>
-                     <button onClick={restartQuiz} className="restart-button">
-                        Restart Quiz
-                    </button>
-                </div>
+                <Result
+                    status="success"
+                    title="Quiz Complete!"
+                    subTitle={`You scored ${score} out of ${questions.length}. Well done!`}
+                    extra={[
+                        <Button type="primary" key="restart" icon={<ReloadOutlined />} onClick={restartQuiz}>
+                            Restart Quiz
+                        </Button>,
+                    ]}
+                />
             ) : (
                 <>
-                    <div className='question-section'>
-                        <div className='question-count'>
-                            <span>Question {currentQuestionIndex + 1}</span>/{questions.length}
-                        </div>
-                        <div className='question-text'>{questions[currentQuestionIndex].question}</div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Text type="secondary">Question {currentQuestionIndex + 1}/{questions.length}</Text>
+                        <Title level={4} style={{ marginTop: '5px' }}>{questions[currentQuestionIndex].question}</Title>
                     </div>
-                    <div className='answer-section'>
-                        {questions[currentQuestionIndex].answers.map((answerOption, index) => {
-                            const isCorrect = index === questions[currentQuestionIndex].correct_answer;
-                            return (
-                                <button
-                                    key={index}
-                                    onClick={() => !isAnswered && handleAnswerOptionClick(isCorrect, index)}
-                                    className={getButtonClass(index, isCorrect)}
-                                    disabled={isAnswered} // Disable button after an answer is selected
-                                >
-                                    {answerOption}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    <div className="progress-bar-container">
-                       <div
-                           className="progress-bar"
-                           style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-                       ></div>
-                   </div>
+
+                    {/* Responsive Grid for Answers */}
+                    <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                         {questions[currentQuestionIndex].answers.map((answerOption, index) => (
+                            <Button
+                                key={index}
+                                className="answer-button" // Add the custom class
+                                block // Make button take full width of its container
+                                size="large" // Make buttons slightly larger
+                                onClick={() => !isAnswered && handleAnswerOptionClick(index)}
+                                disabled={isAnswered} // Overall disabled state after answering
+                                {...getButtonProps(index)} // Apply dynamic type and icon
+                                // Merge dynamic styles from getButtonProps.
+                                // Base styles like height, padding, etc., are now in Quiz.css
+                                style={{ ...getButtonProps(index).style }}
+                             >
+                                {answerOption}
+                            </Button>
+                        ))}
+                    </Space>
+
+                    <Progress
+                        percent={progressPercent}
+                        status="active" // Show animation
+                        strokeColor={{ from: '#108ee9', to: '#87d068' }} // Cute gradient
+                        style={{ marginTop: '30px' }}
+                        showInfo={false} // Hide the percentage text
+                    />
                 </>
             )}
-        </div>
+        </Card>
     );
 }
 
