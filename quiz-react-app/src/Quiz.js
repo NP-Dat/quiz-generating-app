@@ -13,7 +13,7 @@ function Quiz() {
 
     // Fetch quiz data
     useEffect(() => {
-        fetch('/data.json') // Data is in the public folder
+        fetch('/data/data.json') // Data is in the public folder
             .then(res => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
@@ -49,7 +49,7 @@ function Quiz() {
             } else {
                 setShowScore(true); // Show results if it was the last question
             }
-        }, 1500); // Delay of 1.5 seconds
+        }, 1000); // Delay of 1.0 seconds
     };
 
     const getButtonClass = (index, isCorrect) => {
