@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './css/Quiz.css'; // We'll create this file for styling
+import { useLocation } from 'react-router-dom';
 
 function Quiz() {
+    const location = useLocation();
+    const selectedQuiz = location.state?.selectedQuiz || 'data.json';
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
@@ -13,23 +16,23 @@ function Quiz() {
 
     // Fetch quiz data
     useEffect(() => {
-        fetch('/data/data.json') // Data is in the public folder
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+        fetch(`/data/${selectedQuiz}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-                return res.json();
+                return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setQuestions(data);
                 setIsLoading(false);
             })
-            .catch(err => {
-                console.error("Failed to fetch quiz data:", err);
+            .catch((error) => {
+                console.error('Error fetching quiz data:', error);
                 setError('Failed to load quiz questions. Please try refreshing the page.');
                 setIsLoading(false);
             });
-    }, []); // Empty dependency array means this runs once on mount
+    }, [selectedQuiz]);
 
     const handleAnswerOptionClick = (isCorrect, index) => {
         setSelectedAnswer(index); // Set the selected answer

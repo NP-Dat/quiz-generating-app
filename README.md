@@ -54,9 +54,10 @@ A React-based application for testing your networking knowledge. This app fetche
 
 ## Data Source
 
-The quiz questions are stored in `public/data.json`. You can modify this file to add, edit, or remove questions.
+The quiz questions are stored in `public/data/data.json`. You can modify this file to add, edit, or remove questions.
+You can add more json files into `public/data` folder. `npm start` will read all of it and automatically update the `index.json`
 ![image](https://github.com/user-attachments/assets/85a12f1c-9a20-46bf-ba8b-4e4df0b1fbe8)
-in Google AI Studio, use Gemini 2.0 flash thinking (optional: temperature 0.7) to prompt like the img above, copy and paste data into `public/data.json`
+in Google AI Studio, use Gemini 2.0 flash thinking (optional: temperature 0.7) to prompt like the img above, copy and paste data into `public/data/data.json` or just create a new file `.json` and put it in `public/data`
 
 json format:
 {
