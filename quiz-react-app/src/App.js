@@ -12,7 +12,6 @@ function App() {
           <h1>Networking Quiz</h1>
           <nav>
             <Link to="/" className="nav-link">Quiz List</Link>
-            <Link to="/quiz" className="nav-link">Quiz</Link>
           </nav>
         </header>
         <main>
