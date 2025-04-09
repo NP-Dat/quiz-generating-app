@@ -10,6 +10,7 @@ A React-based application for testing your networking knowledge. This app fetche
 *   Tracks score and shows results at the end
 *   Provides feedback on selected answers
 *   Includes a progress bar to indicate quiz progress
+*   **Lists all available quiz files in `public/data` and allows users to select a quiz.**
 
 ## Technologies Used
 
