@@ -182,4 +182,142 @@
 
 .nav-link:hover {
     background-color: rgba(255,255,255,0.1);
+}
+
+/* Quiz Name Display Style */
+.quiz-name-display {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 20px; /* Space below name */
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Score Section Action Buttons */
+.score-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+/* General Button Styles (can refine if needed) */
+.review-button, .back-button, .start-quiz-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: white;
+    background-color: #5bc0de; /* Slightly different blue for variation */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.review-button:hover, .back-button:hover, .start-quiz-button:hover {
+    background-color: #31b0d5;
+    transform: translateY(-2px);
+}
+
+/* Review Section Styles */
+.review-section {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.review-section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #61dafb;
+}
+
+.review-question-block {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+}
+.review-question-block hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin-top: 20px;
+}
+
+
+.review-question-block .question-text {
+    font-size: 1.1rem; /* Slightly smaller for review */
+    margin-bottom: 15px;
+}
+
+.answer-section.review {
+    grid-template-columns: 1fr; /* Force single column for clarity */
+}
+
+.answer-button.review {
+    cursor: default; /* Not clickable */
+    opacity: 1 !important; /* Override dimming */
+}
+.answer-button.disabled.review {
+     opacity: 0.6 !important; /* Dim unselected/incorrect slightly */
+}
+
+
+/* Quiz List Styles - Updated for Cards */
+.quiz-list-container { /* Changed from .quiz-list */
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+    max-width: 900px; /* Can be wider */
+    margin: 20px auto;
+    text-align: center;
+}
+
+.quiz-list-container h2 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.quiz-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 25px;
+    text-align: left;
+}
+
+.quiz-card {
+    background-color: #f8f9fa; /* Light background for card */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes button to bottom */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quiz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.quiz-card-title {
+    font-size: 1.2rem;
+    color: #495057;
+    margin-top: 0;
+    margin-bottom: 15px;
+    word-break: break-word; /* Prevent long names from overflowing */
+}
+
+.quiz-card-description { /* Style for future use */
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 20px;
+    flex-grow: 1; /* Allows description to take space */
+}
+
+.start-quiz-button { /* Ensure button is styled */
+    width: 100%; /* Make button full width of card */
+    margin-top: 15px; /* Space above button */
 } 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './css/Quiz.css'; // Import shared CSS including list styles
 
 function QuizList() {
     const [quizFiles, setQuizFiles] = useState([]);
@@ -25,33 +26,24 @@ function QuizList() {
     };
 
     if (loading) return <div className="loading">Loading quiz list...</div>;
+    if (!quizFiles || quizFiles.length === 0) return <div className="loading">No quizzes found. Make sure '.json' files are in 'public/data'.</div>;
 
     return (
-        <div className="quiz-list">
+        <div className="quiz-list-container">
             <h2>Available Quizzes</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Quiz Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {quizFiles.map((file, index) => (
-                        <tr key={index}>
-                            <td>{file}</td>
-                            <td>
-                                <button 
-                                    onClick={() => handleQuizSelect(file)}
-                                    className="restart-button"
-                                >
-                                    Start Quiz
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="quiz-cards">
+                {quizFiles.map((file, index) => (
+                    <div key={index} className="quiz-card">
+                        <h3 className="quiz-card-title">{file.replace('.json', '')}</h3>
+                        <button
+                            onClick={() => handleQuizSelect(file)}
+                            className="start-quiz-button"
+                        >
+                            Start Quiz
+                        </button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
