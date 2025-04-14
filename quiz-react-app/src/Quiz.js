@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './css/Quiz.css'; // We'll create this file for styling
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 
-function Quiz() {
+function Quiz({ darkMode, toggleDarkMode }) {
     const location = useLocation();
     const navigate = useNavigate(); // Hook for navigation
     const selectedQuiz = location.state?.selectedQuiz; // Removed default 'data.json'
@@ -24,7 +24,8 @@ function Quiz() {
     const [isAnswered, setIsAnswered] = useState(false);
     const [userAnswers, setUserAnswers] = useState({}); // Store user answers { questionIndex: selectedAnswerIndex }
     const [showReview, setShowReview] = useState(false); // State to toggle review section
-
+    const [maxReachedIndex, setMaxReachedIndex] = useState(0); // Track the furthest question reached
+    
     // Fetch quiz data - only if selectedQuiz is available
     useEffect(() => {
         if (!selectedQuiz) {
@@ -55,23 +56,47 @@ function Quiz() {
         setIsAnswered(true);
         setUserAnswers(prevAnswers => ({
             ...prevAnswers,
-            [currentQuestionIndex]: index // Store the selected index for the current question
+            [currentQuestionIndex]: index
         }));
 
         if (isCorrect) {
             setScore(score + 1);
         }
 
+        // Update maxReachedIndex if we're moving to a new question
+        if (currentQuestionIndex + 1 > maxReachedIndex) {
+            setMaxReachedIndex(currentQuestionIndex + 1);
+        }
+
         setTimeout(() => {
             const nextQuestion = currentQuestionIndex + 1;
             if (nextQuestion < questions.length) {
                 setCurrentQuestionIndex(nextQuestion);
-                setSelectedAnswer(null); // Reset selected answer for the next question
-                setIsAnswered(false); // Reset answered state
+                setSelectedAnswer(null);
+                setIsAnswered(false);
             } else {
-                setShowScore(true); // Show results if it was the last question
+                setShowScore(true);
             }
-        }, 1000); // Delay of 1.0 seconds
+        }, 1000);
+    };
+
+    // Updated function to only navigate to a previous question if it was answered
+    const handlePreviousQuestion = () => {
+        if (currentQuestionIndex > 0 && userAnswers[currentQuestionIndex - 1] !== undefined) {
+            const prevIndex = currentQuestionIndex - 1;
+            setCurrentQuestionIndex(prevIndex);
+            setSelectedAnswer(userAnswers[prevIndex] ?? null);
+            setIsAnswered(userAnswers[prevIndex] !== undefined);
+        }
+    };
+
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex < maxReachedIndex) {
+            const nextIndex = currentQuestionIndex + 1;
+            setCurrentQuestionIndex(nextIndex);
+            setSelectedAnswer(userAnswers[nextIndex] ?? null);
+            setIsAnswered(userAnswers[nextIndex] !== undefined);
+        }
     };
 
     // Updated getButtonClass for review state
@@ -133,7 +158,10 @@ function Quiz() {
     }
 
     return (
-        <div className='quiz-container'>
+        <div className={`quiz-container ${darkMode ? 'dark-mode' : ''}`}>
+            <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
+            </button>
             <p className="quiz-name-display">Playing: {selectedQuiz}</p> {/* Display selected quiz name */}
             {showScore ? (
                 <div className='score-section'>
@@ -193,33 +221,46 @@ function Quiz() {
                         <div className='question-count'>
                             <span>Question {currentQuestionIndex + 1}</span>/{questions.length}
                         </div>
-                        <div className='question-text'>{questions[currentQuestionIndex].question}</div>
+                        <div className='question-text'>{questions[currentQuestionIndex]?.question}</div>
                     </div>
                     <div className='answer-section'>
-                        {questions[currentQuestionIndex].answers.map((answerOption, index) => {
-                            const isCorrect = index === questions[currentQuestionIndex].correct_answer;
-                            return (
-                                <button
-                                    key={index}
-                                    onClick={() => !isAnswered && handleAnswerOptionClick(isCorrect, index)}
-                                    className={getButtonClass(currentQuestionIndex, index)} // Pass only question and answer index
-                                    disabled={isAnswered}
-                                >
-                                    {answerOption}
-                                </button>
-                            );
-                        })}
+                        {questions[currentQuestionIndex]?.answers.map((answer, index) => (
+                            <button
+                                key={index}
+                                onClick={() => handleAnswerOptionClick(index === questions[currentQuestionIndex].correct_answer, index)}
+                                className={getButtonClass(currentQuestionIndex, index)}
+                                disabled={isAnswered}
+                            >
+                                {answer}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="navigation-buttons">
+                        <button 
+                            onClick={handlePreviousQuestion}
+                            disabled={currentQuestionIndex === 0}
+                            className="nav-button"
+                        >
+                            Previous Question
+                        </button>
+                        <button 
+                            onClick={handleNextQuestion}
+                            disabled={currentQuestionIndex >= maxReachedIndex}
+                            className="nav-button"
+                        >
+                            Next Question
+                        </button>
                     </div>
                     <div className="progress-bar-container">
-                       <div
-                           className="progress-bar"
-                           style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-                       ></div>
-                   </div>
+                        <div
+                            className="progress-bar"
+                            style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+                        ></div>
+                    </div>
                 </>
             )}
         </div>
     );
 }
 
-export default Quiz; 
+export default Quiz;
