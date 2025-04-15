@@ -1,0 +1,18 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore public data directory
+quiz-react-app/public/data/
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore lock files
+package-lock.json
+
+# Ignore temporary files
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
