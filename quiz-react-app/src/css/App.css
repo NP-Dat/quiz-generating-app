@@ -10,6 +10,11 @@ body {
   color: #333;
 }
 
+body.dark-mode {
+  background-color: #121212;
+  color: #fff;
+}
+
 .App {
   text-align: center;
   display: flex;
@@ -20,6 +25,10 @@ body {
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+body.dark-mode .App-logo {
+  filter: brightness(0.8);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -35,10 +44,19 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+body.dark-mode .App-header {
+  background-color: #23272f;
+  color: #fff;
+}
+
 .App-header h1 {
   margin: 0;
   font-size: 2rem;
   font-weight: bold;
+}
+
+body.dark-mode .App-header h1 {
+  color: #fff;
 }
 
 main {
@@ -47,6 +65,11 @@ main {
   display: flex;
   justify-content: center;
   align-items: flex-start; /* Align quiz to the top */
+}
+
+body.dark-mode main {
+  background: none;
+  color: #fff;
 }
 
 .App-link {
@@ -63,10 +86,15 @@ main {
 }
 
 .App-footer {
-  background-color: #282c34; /* Dark footer */
+  background-color: #f0f2f5; /* Match light background */
   padding: 10px;
-  color: white;
+  color: #333; /* Dark text for light mode */
   font-size: 0.8rem;
+}
+
+body.dark-mode .App-footer {
+  background-color: #181a1b;
+  color: #fff;
 }
 
 .loading, .error-message {
@@ -75,7 +103,47 @@ main {
   margin-top: 50px;
 }
 
+body.dark-mode .loading,
+body.dark-mode .error-message {
+  color: #fff;
+}
+
 .error-message {
     color: red;
     font-weight: bold;
+}
+
+body.dark-mode .quiz-list-container,
+body.dark-mode .quiz-card {
+  background-color: #23272f;
+  color: #fff;
+}
+
+body.dark-mode .quiz-card-title {
+  color: #fff;
+}
+
+body.dark-mode .start-quiz-button,
+body.dark-mode .review-button,
+body.dark-mode .back-button {
+  background-color: #444;
+  color: #fff;
+}
+
+body.dark-mode .start-quiz-button:hover,
+body.dark-mode .review-button:hover,
+body.dark-mode .back-button:hover {
+  background-color: #666;
+}
+
+body.dark-mode .nav-link {
+  color: #fff;
+}
+
+body.dark-mode .quiz-list-container h2 {
+  color: #fff;
+}
+
+body.dark-mode .quiz-card-description {
+  color: #ccc;
 }
