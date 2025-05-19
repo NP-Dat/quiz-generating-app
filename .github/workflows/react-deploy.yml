@@ -74,6 +74,9 @@ jobs:
 
     - name: Setup Pages
       uses: actions/configure-pages@v5
+      with:
+        enablement: true  # Ensure Pages is enabled explicitly
+                        # Add extra configuration if required for your setup
       # This action configures GitHub Pages for deployment.
       # Default settings are usually fine for React apps built with react-scripts.
 
@@ -86,3 +89,5 @@ jobs:
       id: deployment # Give an ID to this step to reference its outputs
       uses: actions/deploy-pages@v4
       # This action deploys the artifact uploaded by upload-pages-artifact.
+      with:
+         token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is provided
