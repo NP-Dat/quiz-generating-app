@@ -37,8 +37,9 @@ jobs:
     - name: Build application
       run: npm run build --if-present
 
-    - name: Run tests
-      run: npm test
+    # - name: Run tests
+    #   run: npm test
+    # have not added tests yet
 
     - name: Upload build artifact for GitHub Pages
       uses: actions/upload-artifact@v4
