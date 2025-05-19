@@ -32,7 +32,7 @@ function Quiz() {
             return;
         }
         setIsLoading(true); // Set loading true when fetching
-        fetch(`/data/${selectedQuiz}`)
+        fetch(`${process.env.PUBLIC_URL}/data/${selectedQuiz}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

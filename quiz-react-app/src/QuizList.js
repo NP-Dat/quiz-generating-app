@@ -8,9 +8,16 @@ function QuizList() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch list of quiz files from public/data directory
-        fetch('/data/index.json')
-            .then(response => response.json())
+        // Fetch the list of quizzes from index.json in the public/data folder
+        fetch(`${process.env.PUBLIC_URL}/data/index.json`)
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Error fetching quiz list:', response.statusText);
+                    setLoading(false);
+                    return;
+                }
+                return response.json();
+            })
             .then(data => {
                 setQuizFiles(data.files);
                 setLoading(false);
