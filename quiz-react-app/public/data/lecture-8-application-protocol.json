@@ -1,0 +1,142 @@
+[
+  {
+    "question": "What is the primary purpose of a protocol in client-server communication?",
+    "answers": [
+      "To specify the hardware required for the network",
+      "To make the exchange of messages meaningful and understandable",
+      "To compile the source code for the client and server",
+      "To increase the physical speed of the network connection"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "Which of the following is NOT listed as a design consideration for a protocol?",
+    "answers": [
+      "Stateful vs stateless",
+      "Reliable vs Unreliable",
+      "Choice of programming language",
+      "Data format"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "Why is it important for a protocol setup to include version information?",
+    "answers": [
+      "To handle compatibility issues between different versions of clients and servers",
+      "To ensure all data is sent in binary format",
+      "To make the protocol run faster",
+      "To eliminate the need for a server"
+    ],
+    "correct_answer": 0
+  },
+  {
+    "question": "According to the presentation, what is a notable characteristic of the HTTP/2 protocol?",
+    "answers": [
+      "It is text-based and fully backward-compatible",
+      "It uses a binary format and is not directly compatible with earlier versions",
+      "It is the first version of HTTP to be introduced",
+      "It removes the need for a request line"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In a simple text-based protocol, how is the message type typically identified?",
+    "answers": [
+      "By the length of the entire message",
+      "By a special character at the end of the message",
+      "By the first word on the first line of the message",
+      "By the IP address of the sender"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "What is the key difference between how a standalone app and a client-server app handle a command like 'list directory'?",
+    "answers": [
+      "The standalone app makes a local function call, while the client-server app makes a network call",
+      "The client-server app is always slower",
+      "There is no difference in how the command is handled",
+      "The standalone app makes a network call, while the client-server app makes a local function call"
+    ],
+    "correct_answer": 0
+  },
+  {
+    "question": "In a byte-encoded data format, how does the message handler typically determine the action to perform?",
+    "answers": [
+      "By reading a line of text",
+      "By examining the first byte of the message, which represents the message type",
+      "By checking the total number of bytes received",
+      "By waiting for a special termination character"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In the 'Common Text Protocol' example, how is each line terminated?",
+    "answers": [
+      "With a single newline character (\\n)",
+      "With a tab character (\\t)",
+      "With a period (.)",
+      "With a carriage return followed by a line feed (CR-LF)"
+    ],
+    "correct_answer": 3
+  },
+  {
+    "question": "According to the App State Transition Diagram, what state must the application be in to successfully execute a 'GET' or 'DIR' command?",
+    "answers": [
+      "Login",
+      "START",
+      "File Transfer",
+      "QUIT"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "What is meant by a 'stateful' protocol?",
+    "answers": [
+      "A protocol that does not remember any previous interactions",
+      "A protocol where the server maintains information about the client's session across multiple requests",
+      "A protocol that only works within a single US state",
+      "A protocol that is written in a static programming language"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In the comparison of NFS and DCE File Systems, where is the state information (the file pointer) primarily managed in the NFS example?",
+    "answers": [
+      "On the server, in a file table",
+      "On the client, which sends it with each read request",
+      "In the network router",
+      "Neither system uses state information"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In the App State Transition Diagram, what action causes a transition from the 'File Transfer' state back to the 'Login' state?",
+    "answers": [
+      "LOGIN succeeded",
+      "GET",
+      "LOGOUT",
+      "LOGIN failed"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "How might binary data, such as an image, be sent within a character-encoded protocol?",
+    "answers": [
+      "It cannot be sent",
+      "It can be encoded into text using a scheme like Base64",
+      "It is sent as raw bytes, ignoring the character encoding",
+      "It must be converted into an integer"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In the `FPTClient.go` code, how does the client know it has received the entire directory listing from the server?",
+    "answers": [
+      "The server closes the connection",
+      "It reads until it finds a double newline sequence ('\\r\\n\\r\\n')",
+      "The server sends the total number of files first",
+      "It reads a fixed number of bytes"
+    ],
+    "correct_answer": 1
+  }
+]

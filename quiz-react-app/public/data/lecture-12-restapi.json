@@ -1,0 +1,102 @@
+[
+  {
+    "question": "What does REST stand for?",
+    "answers": [
+      "Resource State Transfer",
+      "Representational State Transfer",
+      "Remote State Transaction",
+      "Representational Service Transaction"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "According to RESTful API design best practices, what should be used in endpoint paths?",
+    "answers": [
+      "Verbs (e.g., /getUsers)",
+      "Nouns (e.g., /users)",
+      "Adjectives (e.g., /activeUsers)",
+      "A mix of verbs and nouns"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "What is the purpose of versioning an API (e.g., /v1/drinks, /v2/drinks)?",
+    "answers": [
+      "To make the API run faster",
+      "To allow for gradual phasing out of old endpoints without breaking existing client applications",
+      "To satisfy a legal requirement",
+      "To reduce the number of endpoints"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In RESTful API design, what is an 'Endpoint'?",
+    "answers": [
+      "The client application making the request",
+      "A single instance of an object",
+      "An API URL on a server that represents a resource or collection",
+      "The database where data is stored"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "Which of the following is considered a 'Bad API' design according to REST principles?",
+    "answers": [
+      "GET /projects",
+      "DELETE /projects/123",
+      "POST /projects",
+      "GET /getAllProjects"
+    ],
+    "correct_answer": 3
+  },
+  {
+    "question": "What is a key benefit of using an API, as listed in the presentation?",
+    "answers": [
+      "It increases user interaction.",
+      "It allows a company to focus on core competencies by outsourcing tasks to external services.",
+      "It replaces the need for a database.",
+      "It guarantees 100% uptime."
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "How should hierarchical objects be represented in a REST API endpoint?",
+    "answers": [
+      "By using query parameters (e.g., /comments?articleId=123)",
+      "By nesting resources in the URL path (e.g., /articles/123/comments)",
+      "By sending the relationship in the request body",
+      "Hierarchical objects are not supported in REST"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "What is a potential drawback of caching data to improve API performance?",
+    "answers": [
+      "It always makes the API slower.",
+      "It increases the load on the database.",
+      "The cached data may become outdated.",
+      "It is not supported by Redis."
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "What is Postman primarily used for?",
+    "answers": [
+      "Writing server-side Go code",
+      "A collaboration platform for API development, including testing and designing APIs",
+      "A database management tool",
+      "A version control system like Git"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "What is the correct HTTP `Content-Type` header for sending and receiving JSON data?",
+    "answers": [
+      "text/html",
+      "application/xml",
+      "application/json",
+      "text/plain"
+    ],
+    "correct_answer": 2
+  }
+]

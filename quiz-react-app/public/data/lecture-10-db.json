@@ -1,0 +1,102 @@
+[
+  {
+    "question": "What is the primary characteristic of the `hashicorp/go-memdb` library?",
+    "answers": [
+      "It stores data on disk in a relational format.",
+      "It is a purpose-built database that stores data primarily in memory.",
+      "It is a driver for connecting to remote MongoDB instances.",
+      "It automatically encrypts all data before storage."
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "What is a major vulnerability of an in-memory database like `go-memdb`?",
+    "answers": [
+      "Slow response speed",
+      "High disk access latency",
+      "Vulnerability to data loss if the server is lost or restarted",
+      "Inability to handle high traffic spikes"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "In Go's `database/sql` package, what is the purpose of the `db.Ping()` function?",
+    "answers": [
+      "To send a network ping to the database server",
+      "To execute a query",
+      "To verify that the connection to the database is still alive and accessible",
+      "To close the database connection"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "How does MongoDB store data, providing flexibility in data structure?",
+    "answers": [
+      "In rigid tables with predefined columns",
+      "In a single, flat text file",
+      "In flexible, JSON-like documents",
+      "In key-value pairs only"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "What is `Go sqlmock` primarily used for?",
+    "answers": [
+      "Connecting to a production MySQL database",
+      "Simulating an SQL driver for testing purposes without needing a real database connection",
+      "An in-memory version of PostgreSQL",
+      "A tool for mocking HTTP requests"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "In the `go-memdb` examples, how do you start a read-only transaction?",
+    "answers": [
+      "txn := db.Txn(true)",
+      "txn := db.Txn(false)",
+      "txn := db.ReadOnly()",
+      "txn := db.Query()"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "Which `go-memdb` function is used to delete all objects in a table that match a specific constraint on an index?",
+    "answers": [
+      "Delete(table, obj)",
+      "Remove(index, args)",
+      "Drop(table)",
+      "DeleteAll(table, index, args)"
+    ],
+    "correct_answer": 3
+  },
+  {
+    "question": "What is a listed 'Pro' of using MongoDB compared to a traditional SQL database?",
+    "answers": [
+      "It is more mature",
+      "It eliminates data duplication completely",
+      "It can be horizontally scaled and has a flexible, non-rigid data structure",
+      "It requires fewer databases"
+    ],
+    "correct_answer": 2
+  },
+  {
+    "question": "In the `database/sql` CRUD example, what does the `rows.Scan()` function do?",
+    "answers": [
+      "It scans the network for available databases.",
+      "It copies the columns from the current row into the variables provided as arguments.",
+      "It closes the row iterator.",
+      "It commits the transaction."
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "After executing an `INSERT` statement with `db.Exec()` in Go, which function is used to get the ID of the newly created row?",
+    "answers": [
+      "result.RowsAffected()",
+      "result.LastInsertId()",
+      "result.GetId()",
+      "db.LastId()"
+    ],
+    "correct_answer": 1
+  }
+]
