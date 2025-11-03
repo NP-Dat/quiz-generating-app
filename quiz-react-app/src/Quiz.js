@@ -17,6 +17,16 @@ function Quiz() {
     }
   }, [selectedQuiz, navigate]);
 
+  // Update document title based on selected quiz
+  useEffect(() => {
+    if (selectedQuiz) {
+      const quizName = selectedQuiz.replace(".json", "");
+      document.title = quizName;
+    } else {
+      document.title = "Quiz";
+    }
+  }, [selectedQuiz]);
+
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);

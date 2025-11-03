@@ -1,5 +1,20 @@
 {
   "files": [
-    "full_questions_bank.json"
+    "commandsA.json",
+    "commandsB.json",
+    "sna_1a.json",
+    "sna_1b.json",
+    "sna_1c.json",
+    "sna_2a.json",
+    "sna_2b.json",
+    "sna_4a.json",
+    "sna_4b.json",
+    "sna_5a.json",
+    "sna_5b.json",
+    "sns_chap1_intro.json",
+    "sns_chap2.json",
+    "sns_chap3.json",
+    "sns_chap4.json",
+    "sns_last_term.json"
   ]
 }

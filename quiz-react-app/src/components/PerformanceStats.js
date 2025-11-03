@@ -22,14 +22,20 @@ import "../css/PerformanceStats.css";
 function PerformanceStats({ quizName, currentScore, totalQuestions }) {
   const [history, setHistory] = useState([]);
   const [showChart, setShowChart] = useState(true);
+  const hasCurrentScore =
+    currentScore !== undefined && totalQuestions !== undefined;
 
   useEffect(() => {
     const quizHistory = getQuizHistory(quizName);
     setHistory(quizHistory);
   }, [quizName]);
 
-  const currentPercentage = Math.round((currentScore / totalQuestions) * 100);
-  const rating = getPerformanceRating(currentPercentage);
+  const currentPercentage = hasCurrentScore
+    ? Math.round((currentScore / totalQuestions) * 100)
+    : null;
+  const rating = hasCurrentScore
+    ? getPerformanceRating(currentPercentage)
+    : null;
   const trend = calculateTrend(history);
   const stats = getStatistics(history);
 
@@ -72,39 +78,44 @@ function PerformanceStats({ quizName, currentScore, totalQuestions }) {
 
   return (
     <div className="performance-stats-container">
-      {/* Current Score and Rating Combined */}
-      <div className="score-and-rating-container">
-        <div
-          className="current-score-card"
-          style={{ borderColor: rating.color }}
-        >
-          <span className="score-emoji">{rating.emoji}</span>
-          <div className="score-details">
-            <div className="score-percentage" style={{ color: rating.color }}>
-              {currentPercentage}%
+      {/* Current Score and Rating Combined - Only show if currentScore is provided */}
+      {hasCurrentScore && rating && (
+        <div className="score-and-rating-container">
+          <div
+            className="current-score-card"
+            style={{ borderColor: rating.color }}
+          >
+            <span className="score-emoji">{rating.emoji}</span>
+            <div className="score-details">
+              <div className="score-percentage" style={{ color: rating.color }}>
+                {currentPercentage}%
+              </div>
+              <p className="score-fraction">
+                {currentScore} out of {totalQuestions} questions
+              </p>
             </div>
-            <p className="score-fraction">
-              {currentScore} out of {totalQuestions} questions
-            </p>
           </div>
-        </div>
 
-        <div className="rating-card" style={{ borderLeftColor: rating.color }}>
-          <div className="rating-header">
-            <h3 style={{ color: rating.color }}>{rating.level}</h3>
-            <span
-              className="safety-badge"
-              style={{
-                backgroundColor: rating.color,
-                color: "white",
-              }}
-            >
-              {rating.safety}
-            </span>
+          <div
+            className="rating-card"
+            style={{ borderLeftColor: rating.color }}
+          >
+            <div className="rating-header">
+              <h3 style={{ color: rating.color }}>{rating.level}</h3>
+              <span
+                className="safety-badge"
+                style={{
+                  backgroundColor: rating.color,
+                  color: "white",
+                }}
+              >
+                {rating.safety}
+              </span>
+            </div>
+            <p className="rating-message">{rating.message}</p>
           </div>
-          <p className="rating-message">{rating.message}</p>
         </div>
-      </div>
+      )}
 
       {/* Statistics Summary */}
       {history.length > 0 && (
@@ -232,7 +243,7 @@ function PerformanceStats({ quizName, currentScore, totalQuestions }) {
       {history.length > 0 && (
         <div className="stats-actions">
           <button className="clear-history-btn" onClick={handleClearHistory}>
-            Clear History
+            CLEAR HISTORY
           </button>
         </div>
       )}

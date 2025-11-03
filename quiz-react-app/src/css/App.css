@@ -94,11 +94,24 @@ body {
   margin: 0;
   font-size: 2rem;
   font-weight: bold;
+  line-height: 1;
 }
 
 .header-left {
   display: flex;
   align-items: center;
+  gap: 20px;
+}
+
+.header-left h1 {
+  line-height: 1;
+  margin: 0;
+}
+
+.header-left nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .header-right {
@@ -112,6 +125,14 @@ main {
   display: flex;
   justify-content: center;
   align-items: flex-start; /* Align quiz to the top */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 15px;
+  }
 }
 
 .App-link {

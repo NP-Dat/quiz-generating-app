@@ -28,6 +28,11 @@ function QuizList() {
       });
   }, []);
 
+  // Update document title
+  useEffect(() => {
+    document.title = "Quiz";
+  }, []);
+
   const handleQuizSelect = (filename) => {
     navigate("/quiz", { state: { selectedQuiz: filename } });
   };
