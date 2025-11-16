@@ -5,9 +5,9 @@ name: Build, Test, and Deploy React App to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-and-test:
@@ -21,32 +21,37 @@ jobs:
         node-version: [22.x] # Using Node.js 22.x as requested
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: quiz-react-app/package-lock.json
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: quiz-react-app/package-lock.json
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build application
-      run: npm run build --if-present
+      - name: Build application
+        run: npm run build --if-present
 
-    # - name: Run tests
-    #   run: npm test
-    # have not added tests yet
+      - name: Create SPA fallback page
+        run: cp build/index.html build/404.html
+        # GitHub Pages needs a 404.html fallback for client-side routing.
+        # Copying index.html ensures reloaded deep links (e.g., /quiz) work.
 
-    - name: Upload build artifact for GitHub Pages
-      uses: actions/upload-artifact@v4
-      with:
-        name: github-pages-artifact
-        path: quiz-react-app/build/
-        retention-days: 1
+      # - name: Run tests
+      #   run: npm test
+      # have not added tests yet
+
+      - name: Upload build artifact for GitHub Pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages-artifact
+          path: quiz-react-app/build/
+          retention-days: 1
 
   deploy-to-github-pages:
     name: Deploy to GitHub Pages
@@ -58,7 +63,7 @@ jobs:
 
     permissions:
       contents: read # To checkout the repository
-      pages: write   # To deploy to GitHub Pages
+      pages: write # To deploy to GitHub Pages
       id-token: write # To authenticate with GitHub Pages
 
     environment:
@@ -66,28 +71,29 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }} # Output the deployment URL
 
     steps:
-    - name: Download build artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: github-pages-artifact # Must match the upload artifact name
-        path: ./build-output # Download to a directory in the runner workspace
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages-artifact # Must match the upload artifact name
+          path: ./build-output # Download to a directory in the runner workspace
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
-      with:
-        enablement: true  # Ensure Pages is enabled explicitly
-                        # Add extra configuration if required for your setup
-      # This action configures GitHub Pages for deployment.
-      # Default settings are usually fine for React apps built with react-scripts.
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement:
+            true # Ensure Pages is enabled explicitly
+            # Add extra configuration if required for your setup
+        # This action configures GitHub Pages for deployment.
+        # Default settings are usually fine for React apps built with react-scripts.
 
-    - name: Upload artifact for GitHub Pages deployment
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./build-output # Path to the directory containing your built site
+      - name: Upload artifact for GitHub Pages deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build-output # Path to the directory containing your built site
 
-    - name: Deploy to GitHub Pages
-      id: deployment # Give an ID to this step to reference its outputs
-      uses: actions/deploy-pages@v4
-      # This action deploys the artifact uploaded by upload-pages-artifact.
-      with:
-         token: ${{ secrets.GITHUB_TOKEN }}  # Ensure token is provided
+      - name: Deploy to GitHub Pages
+        id: deployment # Give an ID to this step to reference its outputs
+        uses: actions/deploy-pages@v4
+        # This action deploys the artifact uploaded by upload-pages-artifact.
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Ensure token is provided
