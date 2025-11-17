@@ -1,38 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import './css/Quiz.css'; // We'll create this file for styling
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
+import './css/Quiz.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { QUIZZES_ENDPOINT } from './config';
 
 function Quiz() {
     const location = useLocation();
-    const navigate = useNavigate(); // Hook for navigation
-    const selectedQuiz = location.state?.selectedQuiz; // Removed default 'data.json'
+    const navigate = useNavigate();
+    const selectedQuiz = location.state?.selectedQuiz;
+    const queryParams = new URLSearchParams(location.search);
+    const quizNameFromQuery = queryParams.get('name');
+    const quizName = typeof selectedQuiz === 'string'
+        ? selectedQuiz
+        : selectedQuiz?.file_name || quizNameFromQuery;
 
-    // Redirect if no quiz is selected (e.g., direct navigation to /quiz)
-    useEffect(() => {
-        if (!selectedQuiz) {
-            navigate('/'); // Redirect to the quiz list
-        }
-    }, [selectedQuiz, navigate]);
-
-    const [questions, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState(
+        selectedQuiz && typeof selectedQuiz === 'object'
+            ? selectedQuiz.list_of_questions || []
+            : []
+    );
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [showScore, setShowScore] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(!questions.length);
     const [error, setError] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isAnswered, setIsAnswered] = useState(false);
-    const [userAnswers, setUserAnswers] = useState({}); // Store user answers { questionIndex: selectedAnswerIndex }
-    const [showReview, setShowReview] = useState(false); // State to toggle review section
+    const [userAnswers, setUserAnswers] = useState({});
+    const [showReview, setShowReview] = useState(false);
 
-    // Fetch quiz data - only if selectedQuiz is available
     useEffect(() => {
-        if (!selectedQuiz) {
-            setIsLoading(false); // Don't load if no quiz is selected
+        if (selectedQuiz && typeof selectedQuiz === 'object') {
+            setQuestions(selectedQuiz.list_of_questions || []);
+            setIsLoading(false);
+            setError(null);
             return;
         }
-        setIsLoading(true); // Set loading true when fetching
-        fetch(`${process.env.PUBLIC_URL}/data/${selectedQuiz}`)
+
+        if (!quizName) {
+            setIsLoading(false);
+            setError('No quiz selected. Please return to the quiz list.');
+            return;
+        }
+
+        setIsLoading(true);
+        fetch(QUIZZES_ENDPOINT)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -40,15 +51,21 @@ function Quiz() {
                 return response.json();
             })
             .then((data) => {
-                setQuestions(data);
+                const match = (data.quizzes || []).find(
+                    (quiz) => quiz.file_name === quizName
+                );
+                if (!match) {
+                    throw new Error(`Quiz ${quizName} not found`);
+                }
+                setQuestions(match.list_of_questions || []);
                 setIsLoading(false);
             })
-            .catch((error) => {
-                console.error('Error fetching quiz data:', error);
-                setError(`Failed to load quiz: ${selectedQuiz}. Please try again.`);
+            .catch((fetchError) => {
+                console.error('Error fetching quiz data:', fetchError);
+                setError(`Failed to load quiz: ${quizName}. Please try again.`);
                 setIsLoading(false);
             });
-    }, [selectedQuiz]); // Dependency remains selectedQuiz
+    }, [selectedQuiz, quizName]);
 
     const handleAnswerOptionClick = (isCorrect, index) => {
         setSelectedAnswer(index);
@@ -74,7 +91,6 @@ function Quiz() {
         }, 1000); // Delay of 1.0 seconds
     };
 
-    // Updated getButtonClass for review state
     const getButtonClass = (qIndex, ansIndex, reviewMode = false) => {
         const currentQ = questions[qIndex];
         const correctAnswerIndex = currentQ.correct_answer;
@@ -109,19 +125,12 @@ function Quiz() {
         setShowReview(false); // Hide review section
     };
 
-    // Handle navigating back to the list
     const backToList = () => {
         navigate('/');
     };
 
-
-    // Redirect if no selected quiz and not loading/error
-    if (!selectedQuiz && !isLoading && !error) {
-         return <div className="loading">No quiz selected. Redirecting...</div>;
-     }
-
     if (isLoading && !error) { // Show loading only if not errored
-        return <div className="loading">Loading Quiz: {selectedQuiz}...</div>;
+        return <div className="loading">Loading Quiz: {quizName || 'Unknown'}...</div>;
     }
 
     if (error) {
@@ -134,7 +143,7 @@ function Quiz() {
 
     return (
         <div className='quiz-container'>
-            <p className="quiz-name-display">Playing: {selectedQuiz}</p> {/* Display selected quiz name */}
+            <p className="quiz-name-display">Playing: {quizName}</p>
             {showScore ? (
                 <div className='score-section'>
                     {!showReview ? (

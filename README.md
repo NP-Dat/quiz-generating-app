@@ -1,94 +1,78 @@
 # Networking Quiz App
 
-A React-based application for testing your networking knowledge. This app fetches quiz questions from a `data.json` file and provides a user-friendly interface to answer the questions.
+A full-stack quiz experience for networking lectures. The React front end now talks to a lightweight Express + MongoDB API so quizzes can be stored, retrieved, and uploaded without touching the filesystem.
 
 ## Features
 
-*   Modern and cute UI/UX
-*   Fetches quiz data from JSON files in the `public/data` directory.
-*   **Allows users to select a quiz from a list of available JSON files.**
-*   Displays questions and answer options.
-*   Tracks score and shows results at the end.
-*   Provides feedback on selected answers during the quiz.
-*   Includes a progress bar to indicate quiz progress.
-*   **Allows users to review their answers after completing a quiz, showing correct answers and user selections.**
-*   **Displays the name of the currently selected quiz on the quiz page.**
-*   **Presents the list of quizzes as visually appealing cards instead of a table.**
+- Modern, friendly quiz UI with scoring, review mode, and progress tracking.
+- Quiz list is loaded from MongoDB through the Express API instead of local JSON files.
+- Dedicated upload screen for adding new quizzes; drop a `.json` file and it is pushed to MongoDB using the required payload format:
+  ```json
+  [
+    {
+      "file_name": "lecture-7-docker.json",
+      "list_of_questions": [{ "question": "...", "answers": [], "correct_answer": 0 }]
+    }
+  ]
+  ```
+- Backend exposes `GET /api/quizzes` and `POST /api/quizzes` for fetching and inserting/updating quiz documents.
 
-## Technologies Used
+## Project Structure
 
-*   React
-*   CSS
-
-## Getting Started
-
-### Prerequisites
-
-*   Node.js and npm installed on your machine.
-
-### Installation
-
-1.  Clone the repository:
-
-    ```bash
-    git clone <repository-url>
-    ```
-
-2.  Navigate to the project directory:
-
-    ```bash
-    cd quiz-react-app
-    ```
-
-3.  Install the dependencies:
-
-    ```bash
-    npm install
-    ```
-
-### Running the App
-
-1.  Start the development server:
-
-    ```bash
-    npm start
-    ```
-
-2.  Open your browser and navigate to `http://localhost:3000` to view the app.
-
-## Data Source
-
-The quiz questions are stored in `public/data`. The app reads all `.json` files in this directory to populate the quiz list.  `npm start` will read all of it and automatically update the `index.json`
-
-To add or modify quizzes:
-
-1.  Create new `.json` files or modify existing ones in the `public/data` folder.
-2.  Ensure your JSON files follow the format below.
-3.  Restart the development server if it's already running to see the updated quiz list.
-
-![image](https://github.com/user-attachments/assets/85a12f1c-9a20-46bf-ba8b-4e4df0b1fbe8)
-in Google AI Studio, use Gemini 2.0 flash thinking (optional: temperature 0.7) to prompt like the img above, copy and paste data into `public/data/data.json` or just create a new file `.json` and put it in `public/data`
-
-json format:
-```json
-{
-    "question": "What version of the Internet Protocol is IPv4?",
-    "answers": [
-      "1st version",
-      "2nd version",
-      "3rd version",
-      "4th version"
-    ],
-    "correct_answer": 3
-  }
+```
+quiz-generating-app/
+├── back-end/          # Express + MongoDB API
+└── quiz-react-app/    # React client
 ```
 
+## Prerequisites
+
+- Node.js 18+
+- A running MongoDB instance (local Atlas cluster or self-hosted)
+
+## Backend Setup (`back-end/`)
+
+1. Install dependencies:
+   ```bash
+   cd back-end
+   npm install
+   ```
+2. Copy `env.example` to `.env` and fill in the values:
+   ```
+   MONGODB_URI=mongodb://localhost:27017/quizdb
+   PORT=4000
+   CLIENT_ORIGIN=http://localhost:3000
+   ```
+3. Start the API:
+   ```bash
+   # for production-style run
+   npm start
+
+   # or with auto-reload during development
+   npm run dev
+   ```
+
+`GET /api/quizzes` returns `{ "quizzes": [...] }`.  
+`POST /api/quizzes` accepts the array payload shown above and upserts each quiz by `file_name`.
+
+## Frontend Setup (`quiz-react-app/`)
+
+1. Install dependencies:
+   ```bash
+   cd quiz-react-app
+   npm install
+   ```
+2. Create `.env` in this folder and set the API base URL (defaults to `http://localhost:4000` if omitted):
+   ```
+   REACT_APP_API_BASE_URL=http://localhost:4000
+   ```
+3. Start the React app:
+   ```bash
+   npm start
+   ```
+4. Open `http://localhost:3000`. Use the **Upload Quiz** page to push new JSON files to the backend. The **Quiz List** page fetches quizzes from MongoDB and lets users play them instantly.
 
 ## Contributing
 
-Feel free to contribute to this project by submitting issues or pull requests.
-
-## License
-
-[Choose a license and add it here] 
+Issues and pull requests are welcome!
 

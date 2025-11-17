@@ -1,49 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './css/Quiz.css'; // Import shared CSS including list styles
+import './css/Quiz.css';
+import { QUIZZES_ENDPOINT } from './config';
 
 function QuizList() {
-    const [quizFiles, setQuizFiles] = useState([]);
+    const [quizzes, setQuizzes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch the list of quizzes from index.json in the public/data folder
-        fetch(`${process.env.PUBLIC_URL}/data/index.json`)
+        const controller = new AbortController();
+
+        fetch(QUIZZES_ENDPOINT, { signal: controller.signal })
             .then(response => {
                 if (!response.ok) {
-                    console.error('Error fetching quiz list:', response.statusText);
-                    setLoading(false);
-                    return;
+                    throw new Error(`Error fetching quiz list: ${response.statusText}`);
                 }
                 return response.json();
             })
             .then(data => {
-                setQuizFiles(data.files);
+                setQuizzes(data.quizzes || []);
                 setLoading(false);
             })
-            .catch(error => {
-                console.error('Error fetching quiz list:', error);
+            .catch(err => {
+                if (err.name === 'AbortError') return;
+                console.error(err);
+                setError('Failed to load quizzes. Please try again later.');
                 setLoading(false);
             });
+
+        return () => controller.abort();
     }, []);
 
-    const handleQuizSelect = (filename) => {
-        navigate('/quiz', { state: { selectedQuiz: filename } });
+    const handleQuizSelect = (quiz) => {
+        navigate(`/quiz?name=${encodeURIComponent(quiz.file_name)}`, {
+            state: { selectedQuiz: quiz }
+        });
     };
 
     if (loading) return <div className="loading">Loading quiz list...</div>;
-    if (!quizFiles || quizFiles.length === 0) return <div className="loading">No quizzes found. Make sure '.json' files are in 'public/data'.</div>;
+    if (error) return <div className="error-message">{error}</div>;
+    if (!quizzes || quizzes.length === 0) return <div className="loading">No quizzes found in the database.</div>;
 
     return (
         <div className="quiz-list-container">
             <h2>Available Quizzes</h2>
             <div className="quiz-cards">
-                {quizFiles.map((file, index) => (
-                    <div key={index} className="quiz-card">
-                        <h3 className="quiz-card-title">{file.replace('.json', '')}</h3>
+                {quizzes.map((quiz) => (
+                    <div key={quiz.file_name} className="quiz-card">
+                        <h3 className="quiz-card-title">{quiz.file_name.replace('.json', '')}</h3>
                         <button
-                            onClick={() => handleQuizSelect(file)}
+                            onClick={() => handleQuizSelect(quiz)}
                             className="start-quiz-button"
                         >
                             Start Quiz

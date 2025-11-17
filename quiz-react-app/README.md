@@ -1,3 +1,7 @@
+# Quiz React App
+
+This React SPA consumes the Express API in `../back-end` to list quizzes, play them, and upload new quiz JSON files. Configure the API location via `REACT_APP_API_BASE_URL` (defaults to `http://localhost:4000`).
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
