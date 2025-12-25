@@ -6,16 +6,50 @@ A full-stack quiz experience for networking lectures. The React front end now ta
 
 - Modern, friendly quiz UI with scoring, review mode, and progress tracking.
 - Quiz list is loaded from MongoDB through the Express API instead of local JSON files.
-- Dedicated upload screen for adding new quizzes; drop a `.json` file and it is pushed to MongoDB using the required payload format:
-  ```json
-  [
-    {
-      "file_name": "lecture-7-docker.json",
-      "list_of_questions": [{ "question": "...", "answers": [], "correct_answer": 0 }]
-    }
-  ]
-  ```
+- Dedicated upload screen for adding new quizzes; drop a `.json` file and it is pushed to MongoDB.
 - Backend exposes `GET /api/quizzes` and `POST /api/quizzes` for fetching and inserting/updating quiz documents.
+
+## Quiz JSON File Format
+
+When uploading a quiz, your JSON file should contain an **array of question objects**. Each question object must have:
+
+- `question` (string): The question text
+- `answers` (array of strings): List of possible answers
+- `correct_answer` (number): Zero-based index of the correct answer
+
+### Example Quiz File (`lecture-9-http.json`)
+
+```json
+[
+  {
+    "question": "What does HTTP stand for?",
+    "answers": [
+      "Hyperlink Transfer and Text Protocol",
+      "Hyper Text Transfer Protocol",
+      "Home Text Transfer Protocol",
+      "Hyper Text Transmission Protocol"
+    ],
+    "correct_answer": 1
+  },
+  {
+    "question": "Which HTTP method is used to instruct a server to send the target resource, such as a web page?",
+    "answers": ["POST", "HEAD", "GET", "PUT"],
+    "correct_answer": 2
+  },
+  {
+    "question": "An HTTP response with a status code of 404 belongs to which class of errors?",
+    "answers": [
+      "Informational (1xx)",
+      "Successful (2xx)",
+      "Redirection (3xx)",
+      "Client errors (4xx)"
+    ],
+    "correct_answer": 3
+  }
+]
+```
+
+> **Note:** The `correct_answer` uses zero-based indexing. In the first example above, `correct_answer: 1` means "Hyper Text Transfer Protocol" (the second answer) is correct.
 
 ## Project Structure
 
@@ -44,6 +78,7 @@ quiz-generating-app/
    CLIENT_ORIGIN=http://localhost:3000
    ```
 3. Start the API:
+
    ```bash
    # for production-style run
    npm start
@@ -75,4 +110,3 @@ quiz-generating-app/
 ## Contributing
 
 Issues and pull requests are welcome!
-
