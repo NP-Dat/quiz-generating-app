@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const createError = require('http-errors');
 
 const quizzesRouter = require('./routes/quizzes');
+const questionBanksRouter = require('./routes/questionBanks');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/api/quizzes', quizzesRouter);
+app.use('/api/question-banks', questionBanksRouter);
 
 app.use((_req, _res, next) => {
   next(createError(404, 'Route not found'));

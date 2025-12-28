@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "total_questions": 11,
+    "includes_user_questions": true,
+    "note": "This file currently includes only the user's original questions with answers and patterns."
+  },
+  "questions": [
+    {
+      "pdf": "User_Provided",
+      "question": "The IT monitoring team receives a flood of non-critical alerts, causing them to overlook a critical system outage. Critique the current alerting strategy and propose improvements for better monitoring efficiency.",
+      "answer": "The current alerting strategy suffers from alert fatigue because non-critical events generate the same type or volume of notifications as critical incidents, training staff to ignore alerts. A critique is that alerts are not prioritized by severity, lack clear ownership, and are not actionable. Improvements include: defining severity levels (critical, warning, info) and sending different notification channels and urgency based on level; reducing noise by suppressing flapping alerts and aggregating similar events; implementing dependency-aware alerting so that only root-cause alerts fire instead of cascades; creating runbooks for each alert type so responders know exactly what to do; using escalation policies and on-call rotation; and monitoring the monitoring system itself. Dashboards should highlight only key SLO/SLA metrics, and non-critical events should be logged for later analysis rather than generating disruptive notifications.",
+      "pattern": "Scenario-Based Troubleshooting & Analysis"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "Your company is experiencing intermittent failures in resolving domain names. After inspecting the configuration, you notice that the primary DNS server is frequently timing out. Analyze the possible reasons for these failures and propose a solution to optimize DNS server performance.",
+      "answer": "Intermittent DNS resolution failures and timeouts on the primary server can be caused by high query load, insufficient CPU or memory, network congestion or packet loss between clients and the DNS server, misconfigured recursion or forwarding, slow upstream authoritative servers, or excessive logging and poor cache configuration. The server might also be single-homed with no redundancy. To optimize performance, you can: deploy at least one secondary DNS server and configure clients with multiple resolvers; enable and tune caching with appropriate TTLs to reduce upstream queries; distribute load using anycast or load balancers; ensure the DNS server has adequate resources and is located close to clients; tune query rate limits and connection limits; and monitor DNS-specific metrics (response time, SERVFAIL rates, cache hit ratio). Additionally, validate configuration (zones, forwarders) and consider using a modern, optimized resolver like Unbound or PowerDNS Recursor.",
+      "pattern": "Scenario-Based Troubleshooting & Analysis"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "A database server is showing high paging activity, and application performance is suffering as a result. Analyze the root cause of high paging and propose strategies to reduce memory-related performance issues.",
+      "answer": "High paging indicates that the system is under memory pressure and is frequently moving pages between RAM and swap, causing high disk I/O and latency. Root causes include insufficient physical RAM for the workload, oversized working sets for the database, memory leaks, too many concurrent connections, or other processes competing for memory. To reduce memory-related issues, first confirm paging with tools like vmstat (si/so), free, and iostat. Short-term strategies: stop or restart memory-hungry non-essential services, tune the database buffer cache and connection limits, and ensure swap is configured but not heavily relied on. Long-term strategies: add RAM, optimize queries and indexes to reduce working set, adjust kernel swappiness, isolate the database on a dedicated server or cgroup, and monitor memory over time to plan capacity. The goal is to keep active working sets in RAM and paging activity near zero under normal load.",
+      "pattern": "Scenario-Based Troubleshooting & Analysis"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "How does a sender determine the destination MAC address for a packet destined for another network?",
+      "answer": "When sending to a host on another IP network, the sender does not resolve the remote host's MAC directly. Instead, it sends the packet to its configured default gateway (router). The sender consults its routing table, sees that the destination IP is non-local, and selects the default gateway's IP as the next hop. It then uses ARP (Address Resolution Protocol) on the local link to resolve the gateway's IP address to a MAC address (by sending an ARP request and receiving an ARP reply). The Ethernet frame is then addressed to the router's MAC, with the IP destination set to the final remote IP. The router later forwards the packet further, performing its own ARP lookups on the next hop network.",
+      "pattern": "Technical Process Explanation"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "Explain the process of DHCP lease acquisition. How does a client obtain an IP address from a DHCP server? What are the advantages of using DHCP for IP address assignment in comparison to static IP addressing?",
+      "answer": "DHCP lease acquisition follows the DORA process: Discover, Offer, Request, Acknowledge. A new client broadcasts a DHCPDISCOVER to find servers. One or more servers respond with DHCPOFFER messages containing proposed IP configuration (IP address, subnet mask, gateway, DNS, lease time). The client selects one offer and broadcasts a DHCPREQUEST indicating the chosen server and IP. That server confirms with a DHCPACK, finalizing the lease. The client configures its interface with the received parameters and periodically renews the lease. Advantages of DHCP over static addressing include centralized management of IP pools, reduced risk of address conflicts, automatic distribution of additional parameters (DNS, NTP, gateway), easy reconfiguration of network settings without touching each host, and better tracking and logging of address usage. It also simplifies client provisioning for large and dynamic environments.",
+      "pattern": "Technical Process Explanation"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "What can you do with ping command in troubleshooting network problem? Explain why you might want to use ping. Explain why you might want to use traceroute instead of ping.",
+      "answer": "The ping command sends ICMP Echo Request packets to a destination and measures whether replies are received and how long they take. It is useful to verify basic IP connectivity, detect packet loss, measure round-trip latency, and quickly see if a host is reachable. You might use ping to distinguish between local configuration issues and remote host or path problems. However, ping only tests end-to-end reachability and does not show the path taken. traceroute (or tracert) discovers the sequence of routers between source and destination by sending packets with increasing TTL values and recording ICMP Time Exceeded responses. You would use traceroute instead of ping when you need to locate where along the path packets are being dropped or delayed, identify asymmetric routes, or see which network segment is problematic. Ping is for simple reachability; traceroute is for path diagnostics.",
+      "pattern": "Tool Comparison & Use Cases"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "What is the significance of memory utilization metrics such as free, used, and cached in Linux performance analysis? How can these metrics help identify memory-related issues?",
+      "answer": "In Linux, 'free' memory appears low because the kernel aggressively uses RAM for caches and buffers. 'Used' includes application memory plus cache, while 'cached' represents file-backed data that can be reclaimed if needed. The important metric is not raw free memory but whether the system is under pressure: high swap activity (si/so in vmstat), growing swap usage, and applications experiencing latency due to page faults. If cached memory is high but swap activity is low, the system is using memory efficiently. If free and cached are low while swap-in/out is high, the system is overcommitted. These metrics, combined with tools like free, vmstat, top, and /proc/meminfo, help identify whether performance problems are caused by insufficient RAM, memory leaks, or misconfigured applications.",
+      "pattern": "Metrics & Performance Analysis"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "Why must an administrator monitor his/her systems and networks?",
+      "answer": "Administrators must monitor systems and networks to detect problems before users are impacted, protect data integrity, ensure availability, and meet SLAs. Monitoring provides visibility into resource usage, performance trends, security events, and failures that are not immediately visible. Without monitoring, issues like disk filling, memory leaks, failing hardware, or attacks may go unnoticed until they cause outages or data loss. Monitoring also enables capacity planning, verifies that changes have the intended effect, and improves the administrator's quality of life by reducing firefighting and enabling proactive maintenance. Ultimately, monitoring is essential for reliability, security, compliance, and efficient operation of IT infrastructure.",
+      "pattern": "Fundamental Concepts & Justification"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "Can you explain the difference between an application server and a web server? Give example.",
+      "answer": "A web server primarily handles HTTP requests for static content (HTML, CSS, images, simple scripts) and may proxy dynamic requests. Examples include Apache HTTP Server and Nginx. An application server provides a runtime environment for executing application logic (business rules, transactions, persistence) and often supports multiple protocols, component models, and services such as connection pooling and messaging. Examples include Tomcat, JBoss/WildFly, and WebLogic. In a typical architecture, the web server handles client HTTP connections and static assets, then forwards dynamic requests to the application server, which executes application code and returns responses.",
+      "pattern": "Definition & Differentiation"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "Describe the concept of DHCP.",
+      "answer": "DHCP (Dynamic Host Configuration Protocol) is a network protocol that automatically assigns IP configuration parameters to clients, such as IP address, subnet mask, default gateway, DNS servers, and lease time. Instead of manually configuring each host with a static IP, a DHCP server manages a pool of addresses and leases them to clients as they join the network. This simplifies administration, reduces configuration errors, prevents address conflicts, and allows centralized control over network settings. DHCP is especially useful in large, dynamic, or mobile environments where devices frequently join and leave the network.",
+      "pattern": "Definition & Differentiation"
+    },
+    {
+      "pdf": "User_Provided",
+      "question": "In TCP/IP, both MAC addresses and IP addresses serve the same purpose, which is to identify a device on a network. What are the differences between them?",
+      "answer": "MAC addresses are link-layer identifiers burned into or assigned to network interfaces, typically 48-bit values unique on a local segment. They operate at Layer 2 and are used by technologies like Ethernet to deliver frames on a single broadcast domain. IP addresses are Layer 3 logical addresses assigned to interfaces, potentially dynamically, and are routable across networks. IP addresses can change (e.g., via DHCP or mobility), while MAC addresses are relatively stable per NIC. MAC addressing is flat and local in scope; IP addressing is hierarchical and enables routing across the internet. A host may keep the same MAC but different IPs on different networks, and routers use IP addresses to forward packets while using MAC addresses only on each individual link.",
+      "pattern": "Definition & Differentiation"
+    }
+  ]
+}
