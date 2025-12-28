@@ -7,7 +7,8 @@ A full-stack quiz experience for networking lectures. The React front end now ta
 - Modern, friendly quiz UI with scoring, review mode, and progress tracking.
 - Quiz list is loaded from MongoDB through the Express API instead of local JSON files.
 - Dedicated upload screen for adding new quizzes; drop a `.json` file and it is pushed to MongoDB.
-- Backend exposes `GET /api/quizzes` and `POST /api/quizzes` for fetching and inserting/updating quiz documents.
+- **Question Bank**: Browse topics, click questions to reveal answers and patterns—perfect for short-answer study.
+- Backend exposes REST APIs for both quizzes and question banks.
 
 ## Quiz JSON File Format
 
@@ -51,6 +52,42 @@ When uploading a quiz, your JSON file should contain an **array of question obje
 
 > **Note:** The `correct_answer` uses zero-based indexing. In the first example above, `correct_answer: 1` means "Hyper Text Transfer Protocol" (the second answer) is correct.
 
+## Question Bank JSON File Format
+
+Question banks are designed for short-answer questions where users click to reveal the answer. Each question object must have:
+
+- `question` (string): The question text
+- `answer` (string): The full answer text
+- `pattern` (string, optional): Category or pattern type for the question
+- `pdf` (string, optional): Source reference
+
+### Example Question Bank File (`sna_short_answer.json`)
+
+```json
+{
+  "metadata": {
+    "total_questions": 3,
+    "includes_user_questions": true,
+    "note": "Short answer questions for networking"
+  },
+  "questions": [
+    {
+      "pdf": "User_Provided",
+      "question": "How does a sender determine the destination MAC address for a packet destined for another network?",
+      "answer": "When sending to a host on another IP network, the sender does not resolve the remote host's MAC directly. Instead, it sends the packet to its configured default gateway (router). The sender uses ARP to resolve the gateway's IP address to a MAC address.",
+      "pattern": "Technical Process Explanation"
+    },
+    {
+      "question": "Describe the concept of DHCP.",
+      "answer": "DHCP (Dynamic Host Configuration Protocol) is a network protocol that automatically assigns IP configuration parameters to clients, such as IP address, subnet mask, default gateway, DNS servers, and lease time.",
+      "pattern": "Definition & Differentiation"
+    }
+  ]
+}
+```
+
+> **Note:** You can also upload a direct array of questions without the metadata wrapper.
+
 ## Project Structure
 
 ```
@@ -87,8 +124,17 @@ quiz-generating-app/
    npm run dev
    ```
 
-`GET /api/quizzes` returns `{ "quizzes": [...] }`.  
-`POST /api/quizzes` accepts the array payload shown above and upserts each quiz by `file_name`.
+**Quiz API:**
+
+- `GET /api/quizzes` — returns `{ "quizzes": [...] }`
+- `POST /api/quizzes` — upserts quizzes by `file_name`
+
+**Question Bank API:**
+
+- `GET /api/question-banks` — returns `{ "questionBanks": [...] }`
+- `GET /api/question-banks/:fileName` — returns a single question bank
+- `POST /api/question-banks` — upserts question banks by `file_name`
+- `DELETE /api/question-banks/:fileName` — deletes a question bank
 
 ## Frontend Setup (`quiz-react-app/`)
 
@@ -105,7 +151,11 @@ quiz-generating-app/
    ```bash
    npm start
    ```
-4. Open `http://localhost:3000`. Use the **Upload Quiz** page to push new JSON files to the backend. The **Quiz List** page fetches quizzes from MongoDB and lets users play them instantly.
+4. Open `http://localhost:3000`.
+   - **Quiz List**: Browse and take multiple-choice quizzes
+   - **Upload Quiz**: Push new quiz JSON files to the backend
+   - **Question Bank**: Browse topics and click questions to reveal answers
+   - **Upload Question Bank**: Add short-answer question sets
 
 ## Contributing
 
