@@ -1,0 +1,147 @@
+name: Security Scan
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    # Run weekly on Monday at 06:00 UTC to catch newly disclosed vulnerabilities
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22.x"
+
+jobs:
+  # ──────────────────────────────────────────────
+  # 1. Dependency audit — frontend & backend
+  # ──────────────────────────────────────────────
+  dependency-audit-frontend:
+    name: "Dependency Audit — Frontend"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./quiz-react-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: quiz-react-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit (high + critical)
+        run: npm audit --audit-level=high
+
+  dependency-audit-backend:
+    name: "Dependency Audit — Backend"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./back-end
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: back-end/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit (high + critical)
+        run: npm audit --audit-level=high
+
+  # ──────────────────────────────────────────────
+  # 2. CodeQL — static application security testing
+  # ──────────────────────────────────────────────
+  codeql-analysis:
+    name: "CodeQL Analysis (JavaScript)"
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-extended
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
+
+  # ──────────────────────────────────────────────
+  # 3. Secret scanning — detect leaked credentials
+  # ──────────────────────────────────────────────
+  secret-scanning:
+    name: "Secret Leak Detection"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ──────────────────────────────────────────────
+  # 4. OWASP Dependency-Check — known CVE scanning
+  # ──────────────────────────────────────────────
+  owasp-dependency-check:
+    name: "OWASP Dependency-Check"
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: "quiz-generating-app"
+          path: "."
+          format: "HTML"
+          args: >-
+            --scan ./quiz-react-app/package-lock.json
+            --scan ./back-end/package-lock.json
+            --nodeAuditSkipDevDependencies
+            --failOnCVSS 7
+
+      - name: Upload OWASP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-dependency-check-report
+          path: reports/
+          retention-days: 14
